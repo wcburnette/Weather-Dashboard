@@ -11,6 +11,7 @@ const createWeatherCard = (cityName, weatherItem, index) => {
     if (index === 0) {
         return (`<div class="details">
                     <h2>${cityName} (${date})</h2>
+                    <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@4x.png" alt="weather-icon">
                     <h4>Temp: ${tempFahrenheit.toFixed(2)} °F</h4>
                     <h4>Wind: ${weatherItem.wind.speed} MPH</h4>
                     <h4>Humidity: ${weatherItem.main.humidity} %</h4>
@@ -19,6 +20,7 @@ const createWeatherCard = (cityName, weatherItem, index) => {
     return (
         `<li class="card">
             <h3>(${date})</h3>
+            <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@2x.png" alt="weather-icon">
             <h4>Temp: ${tempFahrenheit.toFixed(2)} °F</h4>
             <h4>Wind: ${weatherItem.wind.speed} MPH</h4>
             <h4>Humidity: ${weatherItem.main.humidity} %</h4>
@@ -98,6 +100,32 @@ const saveCityToLocal = (cityName) => {
         localStorage.setItem('cities', JSON.stringify(cities));
     }
 }
+
+const getWeatherForSelectedCity = () => {
+    const selectedCity = pastCitiesSelect.value;
+    const geocodingAPIurl = `https://api.openweathermap.org/geo/1.0/direct?q=${selectedCity}&limit=1&appid=${APIkey}`;
+
+    fetch(geocodingAPIurl)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Error fetching coordinates');
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (!data.length) {
+                throw new Error(`No coordinates found for ${selectedCity}`);
+            }
+            const { lat, lon } = data[0];
+            getWeatherDetails(selectedCity, lat, lon);
+        })
+        .catch(error => {
+            console.error('Error fetching coordinates', error.message);
+            alert('Error fetching coordinates');
+        });
+}
+
+pastCitiesSelect.addEventListener('change', getWeatherForSelectedCity);
 
 const updatePastCities = () => {
     const cities = JSON.parse(localStorage.getItem('cities')) || [];
