@@ -30,6 +30,14 @@ Enter the name of the city you want to search for in the input field.
 Click on the "Search" button.
 View the current weather conditions and the 5-day forecast for the searched city.
 Previously searched cities can be accessed from the search history dropdown.
+Previously searched cities can be searched again from dropdown.
+
+Site Link
+https://wcburnette.github.io/Weather-Dashboard/
+
+Screen Record Link
+https://1drv.ms/v/s!Ajvx8AL_kpmUl1Ji_4qzqXaBnnXD?e=YYv3cc
+
 
 
 
